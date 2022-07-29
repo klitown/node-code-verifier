@@ -1,17 +1,18 @@
-import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
+import server from './src/server';
+import { LogError, LogSuccess } from './src/utils/logger';
 
-// Initial configuration for dotenv
+// Env file
 dotenv.config();
 
-// Initialize Express
-const app: Express = express();
 const port = process.env.PORT || 8000;
 
-// Define the index route for the App
-app.get('/', (req: Request, res: Response) => {
-    res.send('Index route: "/"');
+// * Execute server:
+server.listen(port, () => {
+    LogSuccess(`Server running in port: https://localhost:${port}/api`);
 });
 
-// Execute App
-app.listen(port, () => console.log('App running at PORT: ', port));
+// Control Server Error
+server.on('error', (error) => {
+    LogError(`Server error. Details: ${error}`)
+});
